@@ -6,10 +6,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link
     rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
   />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   />
   <style>
@@ -17,65 +17,233 @@
       font-family: 'Inter', sans-serif;
       margin: 0;
       min-height: 100vh;
+      background-color: #0f0f0f;
+      color: #f8f8f8;
     }
-    .container {
+    
+    .theater-bg {
+      background: radial-gradient(circle at 20% 30%, rgba(30, 30, 30, 0.9) 0%, rgba(15, 15, 15, 1) 70%);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .theater-bg::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.03) 0%,
+        rgba(255, 255, 255, 0) 50%,
+        rgba(255, 255, 255, 0.03) 100%
+      );
+      pointer-events: none;
+    }
+    
+    .curtain-effect {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      --s: 200px; /* control the size */
-      --c1: #1d1d1d;
-      --c2: #4e4f51;
-      --c3: #3c3c3c;
-
-      background: repeating-conic-gradient(
-            from 30deg,
-            #0000 0 120deg,
-            var(--c3) 0 180deg
-          )
-          calc(0.5 * var(--s)) calc(0.5 * var(--s) * 0.577),
-        repeating-conic-gradient(
-          from 30deg,
-          var(--c1) 0 60deg,
-          var(--c2) 0 120deg,
-          var(--c3) 0 180deg
-        );
-      background-size: var(--s) calc(var(--s) * 0.577);
+      background: linear-gradient(
+        to bottom,
+        rgba(180, 0, 0, 0.2) 0%,
+        rgba(0, 0, 0, 0) 10%,
+        rgba(0, 0, 0, 0) 90%,
+        rgba(180, 0, 0, 0.2) 100%
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .password-container {
+      background: rgba(20, 20, 20, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    .video-card {
+      transition: all 0.3s ease;
+      background: rgba(30, 30, 30, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+    }
+    
+    .video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .header-title {
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    .password-input {
+      background: rgba(30, 30, 30, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+    
+    .password-input:focus {
+      border-color: rgba(220, 38, 38, 0.8);
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.3);
+    }
+    
+    .submit-btn {
+      background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+      transition: all 0.3s ease;
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
+    }
+    
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+    
+    .spotlight {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(220, 38, 38, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fadeIn {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+    
+    .delay-100 {
+      animation-delay: 0.1s;
+    }
+    
+    .delay-200 {
+      animation-delay: 0.2s;
+    }
+    
+    .delay-300 {
+      animation-delay: 0.3s;
+    }
+    
+    .classic-badge {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.1) 100%);
+      color: #d4af37;
+      border: 1px solid rgba(212, 175, 55, 0.3);
     }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col">
-
-  <div id="password-screen" class="fixed inset-0 bg-gray-900 bg-opacity-90 flex items-center justify-center px-4">
-    <div class="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full">
-      <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Enter Password to Access</h2>
-      <input
-        id="password-input"
-        type="password"
-        placeholder="Password"
-        class="w-full border border-gray-300 rounded-md px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        autocomplete="off"
-      />
+<body class="min-h-screen flex flex-col theater-bg">
+  <div class="curtain-effect"></div>
+  
+  <div id="password-screen" class="fixed inset-0 flex items-center justify-center px-4 z-50">
+    <div class="password-container rounded-xl p-8 max-w-md w-full animate-fadeIn">
+      <div class="text-center mb-8">
+        <i class="fas fa-theater-masks text-4xl text-red-600 mb-4"></i>
+        <h2 class="text-3xl font-bold text-white mb-2">Welcome to My Theater</h2>
+        <p class="text-gray-400">Enter the password to access exclusive content</p>
+      </div>
+      <div class="mb-6">
+        <input
+          id="password-input"
+          type="password"
+          placeholder="Enter password"
+          class="w-full password-input rounded-lg px-4 py-3 mb-2 focus:outline-none focus:ring-0"
+          autocomplete="off"
+        />
+        <p id="error-message" class="text-red-400 text-sm mt-2 hidden">
+          <i class="fas fa-exclamation-circle mr-1"></i> Incorrect password. Please try again.
+        </p>
+      </div>
       <button
         id="submit-password"
-        class="w-full bg-indigo-600 text-white font-semibold py-2 rounded-md hover:bg-indigo-700 transition"
+        class="w-full submit-btn text-white font-semibold py-3 rounded-lg transition"
       >
-        Submit
+        <i class="fas fa-unlock-alt mr-2"></i> Access Theater
       </button>
-      <p id="error-message" class="text-red-600 mt-4 text-center hidden">Incorrect password. Please try again.</p>
     </div>
   </div>
 
-  <div id="main-content" class="hidden flex-grow flex flex-col">
-    <header class="bg-white shadow-md">
-      <div class="container mx-auto px-4 py-4 flex items-center justify-center">
-        <h1 class="text-2xl font-semibold text-gray-800">My Theater</h1>
+  <div id="main-content" class="hidden flex-grow flex flex-col relative z-10">
+    <header class="py-6 border-b border-gray-800">
+      <div class="container mx-auto px-4 flex items-center justify-between">
+        <div class="flex items-center">
+          <i class="fas fa-theater-masks text-red-600 text-2xl mr-3"></i>
+          <h1 class="header-title text-2xl font-bold text-white">Cinephile Theater</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+          <button class="text-gray-400 hover:text-white transition">
+            <i class="fas fa-search"></i>
+          </button>
+          <button class="text-gray-400 hover:text-white transition">
+            <i class="fas fa-cog"></i>
+          </button>
+        </div>
       </div>
     </header>
 
     <main class="flex-grow container mx-auto px-4 py-8">
-      <h2 class="text-3xl font-semibold text-gray-900 mb-8 text-center">Featured Videos</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-          <div class="aspect-w-16 aspect-h-9">
+      <div class="text-center mb-12 animate-fadeIn delay-100">
+        <h2 class="text-4xl font-bold text-white mb-4">Featured Screenings</h2>
+        <p class="text-gray-400 max-w-2xl mx-auto">
+          Discover our curated selection of cinematic masterpieces and hidden gems from around the world.
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- The Shawshank Redemption Card -->
+        <div class="video-card rounded-xl overflow-hidden animate-fadeIn delay-200">
+          <div class="aspect-w-16 aspect-h-9 relative">
+            <iframe
+              class="w-full h-full"
+              src="https://www.youtube.com/embed/sx8pViXxZQg"
+              title="YouTube video player - The Shawshank Redemption"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-4">
+              <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-medium transition">
+                <i class="fas fa-play mr-2"></i> Watch Now
+              </button>
+            </div>
+          </div>
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="text-xl font-semibold text-white">The Shawshank Redemption</h3>
+              <span class="classic-badge text-xs px-2 py-1 rounded-full">Classic</span>
+            </div>
+            <p class="text-gray-400 text-sm mb-4">Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.</p>
+            <div class="flex items-center text-gray-500 text-sm">
+              <span class="mr-3"><i class="fas fa-star mr-1 text-yellow-400"></i> 9.3/10</span>
+              <span><i class="fas fa-clock mr-1"></i> 2h 22m</span>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <span class="bg-gray-800/60 text-gray-300 text-xs px-2 py-1 rounded">Drama</span>
+              <span class="bg-gray-800/60 text-gray-300 text-xs px-2 py-1 rounded">Prison</span>
+              <span class="bg-gray-800/60 text-gray-300 text-xs px-2 py-1 rounded">Hope</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="video-card rounded-xl overflow-hidden animate-fadeIn delay-200">
+          <div class="aspect-w-16 aspect-h-9 relative">
             <iframe
               class="w-full h-full"
               src="https://www.youtube.com/embed/BI9fKfX5V68"
@@ -84,15 +252,27 @@
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
             ></iframe>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-4">
+              <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-medium transition">
+                <i class="fas fa-play mr-2"></i> Watch Now
+              </button>
+            </div>
           </div>
-          <div class="p-4">
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">Video Title 1</h3>
-            <p class="text-gray-600">Description for the first featured video.</p>
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="text-xl font-semibold text-white">Cinematic Journey</h3>
+              <span class="bg-red-600/20 text-red-400 text-xs px-2 py-1 rounded">New</span>
+            </div>
+            <p class="text-gray-400 text-sm mb-4">A visual exploration of modern cinematography techniques and storytelling.</p>
+            <div class="flex items-center text-gray-500 text-sm">
+              <span class="mr-3"><i class="fas fa-clock mr-1"></i> 24:32</span>
+              <span><i class="fas fa-eye mr-1"></i> 1.2M views</span>
+            </div>
           </div>
         </div>
 
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-          <div class="aspect-w-16 aspect-h-9">
+        <div class="video-card rounded-xl overflow-hidden animate-fadeIn delay-300">
+          <div class="aspect-w-16 aspect-h-9 relative">
             <iframe
               class="w-full h-full"
               src="https://www.youtube.com/embed/344-1JPAjpk"
@@ -101,18 +281,66 @@
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
             ></iframe>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end p-4">
+              <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-medium transition">
+                <i class="fas fa-play mr-2"></i> Watch Now
+              </button>
+            </div>
           </div>
-          <div class="p-4">
-            <h3 class="text-xl font-semibold text-gray-800 mb-2">Video Title 2</h3>
-            <p class="text-gray-600">Description for the second featured video.</p>
+          <div class="p-6">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="text-xl font-semibold text-white">Directors' Vision</h3>
+              <span class="bg-blue-600/20 text-blue-400 text-xs px-2 py-1 rounded">Popular</span>
+            </div>
+            <p class="text-gray-400 text-sm mb-4">Interviews with acclaimed directors about their creative process and inspiration.</p>
+            <div class="flex items-center text-gray-500 text-sm">
+              <span class="mr-3"><i class="fas fa-clock mr-1"></i> 42:15</span>
+              <span><i class="fas fa-eye mr-1"></i> 890K views</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-16 animate-fadeIn delay-300">
+        <h3 class="text-2xl font-bold text-white mb-6 text-center">Collections</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-gray-800/50 hover:bg-gray-800/70 rounded-lg p-4 text-center cursor-pointer transition border border-gray-800 hover:border-gray-700">
+            <i class="fas fa-award text-red-500 text-2xl mb-3"></i>
+            <h4 class="font-medium text-white">Award Winners</h4>
+          </div>
+          <div class="bg-gray-800/50 hover:bg-gray-800/70 rounded-lg p-4 text-center cursor-pointer transition border border-gray-800 hover:border-gray-700">
+            <i class="fas fa-globe-americas text-blue-500 text-2xl mb-3"></i>
+            <h4 class="font-medium text-white">International</h4>
+          </div>
+          <div class="bg-gray-800/50 hover:bg-gray-800/70 rounded-lg p-4 text-center cursor-pointer transition border border-gray-800 hover:border-gray-700">
+            <i class="fas fa-film text-yellow-500 text-2xl mb-3"></i>
+            <h4 class="font-medium text-white">Classics</h4>
+          </div>
+          <div class="bg-gray-800/50 hover:bg-gray-800/70 rounded-lg p-4 text-center cursor-pointer transition border border-gray-800 hover:border-gray-700">
+            <i class="fas fa-magic text-purple-500 text-2xl mb-3"></i>
+            <h4 class="font-medium text-white">Fantasy</h4>
           </div>
         </div>
       </div>
     </main>
 
-    <footer class="bg-white border-t mt-12">
-      <div class="container mx-auto px-4 py-6 text-center text-gray-600 text-sm">
-        &copy; 2024 My Theater. All rights reserved.
+    <footer class="border-t border-gray-800 py-8 mt-12">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="flex items-center mb-4 md:mb-0">
+            <i class="fas fa-theater-masks text-red-600 text-2xl mr-3"></i>
+            <span class="text-xl font-bold text-white">Cinephile Theater</span>
+          </div>
+          <div class="flex space-x-6">
+            <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="mt-8 text-center text-gray-500 text-sm">
+          &copy; 2024 Cinephile Theater. All rights reserved. 
+          <span class="block mt-2">Created with <i class="fas fa-heart text-red-500 mx-1"></i> for film enthusiasts</span>
+        </div>
       </div>
     </footer>
   </div>
@@ -124,16 +352,56 @@
     const submitButton = document.getElementById('submit-password');
     const errorMessage = document.getElementById('error-message');
     const correctPassword = '12345679';
+    
+    // Create spotlight effect
+    document.addEventListener('mousemove', (e) => {
+      const spotlight = document.querySelector('.spotlight');
+      if (!spotlight) {
+        const newSpotlight = document.createElement('div');
+        newSpotlight.className = 'spotlight';
+        document.body.appendChild(newSpotlight);
+      }
+      
+      const x = e.clientX;
+      const y = e.clientY;
+      
+      document.querySelector('.spotlight').style.left = `${x - 150}px`;
+      document.querySelector('.spotlight').style.top = `${y - 150}px`;
+    });
 
     function checkPassword() {
       const enteredPassword = passwordInput.value;
       if (enteredPassword === correctPassword) {
-        passwordScreen.classList.add('hidden');
-        mainContent.classList.remove('hidden');
-        errorMessage.classList.add('hidden');
-        passwordInput.value = '';
+        // Add animation when showing main content
+        passwordScreen.style.opacity = '1';
+        passwordScreen.style.transition = 'opacity 0.5s ease';
+        passwordScreen.style.opacity = '0';
+        
+        setTimeout(() => {
+          passwordScreen.classList.add('hidden');
+          mainContent.classList.remove('hidden');
+          errorMessage.classList.add('hidden');
+          passwordInput.value = '';
+          
+          // Animate in the main content
+          document.querySelectorAll('.animate-fadeIn').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+          });
+          
+          setTimeout(() => {
+            document.querySelectorAll('.animate-fadeIn').forEach(el => {
+              el.style.opacity = '1';
+              el.style.transform = 'translateY(0)';
+            });
+          }, 100);
+        }, 500);
       } else {
         errorMessage.classList.remove('hidden');
+        passwordInput.classList.add('animate-shake');
+        setTimeout(() => {
+          passwordInput.classList.remove('animate-shake');
+        }, 500);
       }
     }
 
@@ -143,6 +411,20 @@
         checkPassword();
       }
     });
+    
+    // Add shake animation for wrong password
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-5px); }
+        40%, 80% { transform: translateX(5px); }
+      }
+      .animate-shake {
+        animation: shake 0.4s ease-in-out;
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 </body>
 </html>
